@@ -1,3 +1,4 @@
-app:
-    resource: "@AppBundle/Controller/"
+cms_user:
+    resource: "@CmsUserBundle/Controller/"
     type:     annotation
+    prefix:   /

@@ -38,3 +38,9 @@
 
 # Composer PHAR
 /composer.phar
+
+.idea/*
+.idea/
+.idea
+web/assets
+var/sessions
