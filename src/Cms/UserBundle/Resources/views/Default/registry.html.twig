@@ -1,0 +1,46 @@
+{% extends 'CmsUserBundle:layout.html.twig' %}
+
+{% block body %}
+    <style>
+        .input-group
+        {
+            width: 1000px;
+            margin:10px;
+        }
+
+        .filed-name
+        {
+            font-family: arial;
+            font-size: 18px;
+        }
+    </style>
+<div class="container ">
+        <form method="POST" action="" role="form">
+            <div class="form-group">
+                <label class="filed-name " for="usr">Username</label>
+                <input id="usr" name="username" type="text" class="form-control " placeholder="Username" aria-describedby="basic-addon2" required autocomplete="off" >
+            </div>
+
+            <div class="form-group">
+                <span class="filed-name">Password</span>
+                <input name="password" type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon2" required autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <span class="filed-name">Date of birthday</span>
+                <input name="brthday-date" type="text" class="form-control" placeholder="Date of birthday" aria-describedby="basic-addon2" required autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <span class="filed-name">About me</span>
+                <input name="about" type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon2" required autocomplete="off">
+            </div>
+            <br>
+            <div class="form-group">
+                <input style="background-color:silver;" name="submit" type="submit" class="form-control" value="Registry" aria-describedby="basic-addon2" required>
+            </div>
+
+        </form>
+</div>
+
+{% endblock %}

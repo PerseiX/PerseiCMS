@@ -11,14 +11,16 @@
                 Welcome!
             {% endblock %}
         </title>
-        {% block head %}
 
-        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        <div class="container">
-            {% block body %}{% endblock %}
-        </div>
+
+            {% block head %}
+
+            {% endblock %}
+            {% block body %}
+            {% endblock %}
+
     </body>
 </html>

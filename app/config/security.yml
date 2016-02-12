@@ -1,24 +1,28 @@
-# To get started with security, check out the documentation:
-# http://symfony.com/doc/current/book/security.html
 security:
+     firewalls:
+          default:
+             anonymous: ~
+#             provider: our_db_provider
+             http_basic: ~
+             form_login:
+                 login_path: redirect
+#                 check_path: /login_check
+                 username_parameter: _username
+                 password_parameter: _password
 
-    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
-    providers:
-        in_memory:
-            memory: ~
+             logout:
+                  path:   /logout
+                  target: /
+                  invalidate_session: false
 
-    firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+     access_control:
+         - { path: ^/profile, roles: ROLE_ADMIN }
 
-        main:
-            anonymous: ~
-            # activate different ways to authenticate
+     providers:
+          our_db_provider:
+              entity:
+                  class: CmsUserBundle:User
+                  property: username
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+     encoders:
+         Cms\UserBundle\Entity\User: plaintext

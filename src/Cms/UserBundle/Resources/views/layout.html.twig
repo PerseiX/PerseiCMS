@@ -1,0 +1,32 @@
+{% extends '::base.html.twig' %}
+{% block head  %}
+<div class="container">
+        {% if is_granted('ROLE_USER') %}
+
+            <ul class="nav nav-pills">
+                <li role="presentation" class="active"> <a href="{{ path('logout') }}"> Wyloguj</a></li>
+                {#<li role="presentation"> <a href="{{ path('profile') }}"> Panel</a></li>#}
+                <li role="presentation"><a href="{{ path('index') }}"> Domowa</a></li>
+            </ul>
+
+
+        {% elseif is_granted('ROLE_ADMIN') %}
+            <ul class="nav nav-pills">
+
+                <li role="presentation"><a href="{{ path('index') }}"> Domowa</a></li>
+                <li role="presentation" class="active"> <a href="{{ path('logout') }}"> Wyloguj</a></li>
+            </ul>
+
+        {% else %}
+            <ul class="nav nav-pills">
+                <li role="presentation" class="active"> <a href="{{ path('login') }}"> Zaloguj</a></li>
+                <li role="presentation">  <a href="{{ path('registry') }}"> Zarejestruj</a></li>
+            </ul>
+
+
+        {% endif %}
+        {#<a href="{{ path('index', {'name': 'kamil'}) }}"> Podstrona</a><br>#}
+
+</div>
+    <hr>
+{% endblock %}

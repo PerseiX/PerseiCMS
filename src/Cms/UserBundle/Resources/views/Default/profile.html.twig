@@ -1,0 +1,12 @@
+{% extends 'CmsUserBundle::layout.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        {{ user.username }}<br>
+        {{ user.password }}<br>
+        {{ user.dateBirthday.date }}<br>
+        {{ user.dateBirthday.timezone }}<br>
+        {{ user.about }}
+
+    </div>
+{% endblock %}
