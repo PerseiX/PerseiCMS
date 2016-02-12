@@ -4,28 +4,26 @@
         {% if is_granted('ROLE_USER') %}
 
             <ul class="nav nav-pills">
-                <li role="presentation" class="active"> <a href="{{ path('logout') }}"> Wyloguj</a></li>
-                {#<li role="presentation"> <a href="{{ path('profile') }}"> Panel</a></li>#}
-                <li role="presentation"><a href="{{ path('index') }}"> Domowa</a></li>
+                <li role="presentation" {% if app.request.attributes.get('_route') == 'index' %}class="active" {% endif %}><a href="{{ path('index') }}"> Home</a></li>
+                <li role="presentation" {% if app.request.attributes.get('_route') == 'profile' %}class="active" {% endif %}> <a href="{{ path('profile') }}"> Panel</a></li>
+                <li role="presentation"{% if app.request.attributes.get('_route') == 'logout' %}class="active" {% endif %}> <a href="{{ path('logout') }}"> Wyloguj</a></li>
             </ul>
 
 
         {% elseif is_granted('ROLE_ADMIN') %}
             <ul class="nav nav-pills">
-
-                <li role="presentation"><a href="{{ path('index') }}"> Domowa</a></li>
-                <li role="presentation" class="active"> <a href="{{ path('logout') }}"> Wyloguj</a></li>
+                <li role="presentation" {% if app.request.attributes.get('_route') == 'index' %}class="active" {% endif %}><a href="{{ path('index') }}"> Home</a></li>
+                <li role="presentation" {% if app.request.attributes.get('_route') == 'logout' %}class="active" {% endif %}> <a href="{{ path('logout') }}"> Wyloguj</a></li>
             </ul>
 
         {% else %}
             <ul class="nav nav-pills">
-                <li role="presentation" class="active"> <a href="{{ path('login') }}"> Zaloguj</a></li>
-                <li role="presentation">  <a href="{{ path('registry') }}"> Zarejestruj</a></li>
+                <li role="presentation" {% if app.request.attributes.get('_route') == 'index' %}class="active" {% endif %}><a href="{{ path('index') }}"> Home</a></li>
+                <li role="presentation" {% if app.request.attributes.get('_route') == 'login' %}class="active" {% endif %}><a href="{{ path('login') }}"> Zaloguj</a></li>
+                <li role="presentation" {% if app.request.attributes.get('_route') == 'registry' %}class="active" {% endif %}><a href="{{ path('registry') }}"> Zarejestruj</a></li>
             </ul>
 
-
         {% endif %}
-        {#<a href="{{ path('index', {'name': 'kamil'}) }}"> Podstrona</a><br>#}
 
 </div>
     <hr>
