@@ -42,5 +42,4 @@
 .idea/*
 .idea/
 .idea
-web/assets
 var/sessions

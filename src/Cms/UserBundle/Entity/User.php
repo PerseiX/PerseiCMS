@@ -18,13 +18,17 @@ class User implements UserInterface,  \Serializable
     private $id;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     *     message = "Uzupełnij wszystkie pola."
+     * )
      * @ORM\Column(type="string", length=64)
      */
     private $username;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     *     message = "Uzupełnij wszystkie pola."
+     * )
      * @Assert\Email(
      *     message = "Podany przez ciebie email {{ value }} nie jest prawidłowy.",
      *     checkMX = true
@@ -34,13 +38,17 @@ class User implements UserInterface,  \Serializable
     private $email;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     *     message = "Uzupełnij wszystkie pola."
+     * )
      * @ORM\Column(type="string", length=64)
      */
     private $password;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     *     message = "Uzupełnij wszystkie pola."
+     * )
      * @Assert\DateTime(
      *     message="Podana przez ciebię data urodzin nie jest prawidłowa"
      * )
@@ -49,7 +57,9 @@ class User implements UserInterface,  \Serializable
     private $dateOfBirthday;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(
+     *     message = "Uzupełnij wszystkie pola."
+     * )
      * @ORM\Column(type="text", length=512)
      */
     private $about;

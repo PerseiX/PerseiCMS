@@ -2,18 +2,15 @@
 namespace Cms\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Cms\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Validator\Constraints\Date;
-use Symfony\Component\Validator\Constraints\Email as Email;
 
 class SecurityController extends Controller
 {
@@ -27,6 +24,43 @@ class SecurityController extends Controller
         $this->user = new User();
     }
 
+    /**
+     * @Route("/formValidate", name="formValidate")
+     */
+    public function validateRegistryForm(Request $request)
+    {
+        $message = array();
+
+        if($request->getMethod() == "POST"){
+            $salt = uniqid(mt_rand(), true);
+
+            $userData = $request->request->all();
+            $this->user
+                ->setUsername($userData['username'])
+                ->setEmail($userData['email'])
+                ->setPassword(md5($this->get('security.password_encoder')->encodePassword($this->user, $salt)))
+                ->setDateOfBirthday( new \DateTime($userData['brthdayDate']))
+                ->setAbout($userData['about'])
+                ->setSalt($salt)
+                ->setRoles('ROLE_USER')
+                ->setEraseCredentials('erase');
+
+            $validator = $this->get('validator');
+            $errors = $validator->validate($this->user);
+            if(count($errors) == 0){
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($this->user);
+                $em->flush();
+                $message['success'] = true;
+            }
+            else{
+                $message['success'] = false;
+                $message['error'] =  $errors[0]->getMessage();
+            }
+        }
+
+        return new JsonResponse($message);
+    }
     /**
      * @Route("/redirect", name="redirect")
      */
@@ -94,41 +128,8 @@ class SecurityController extends Controller
     /**
      * @Route("/registry", name="registry")
      */
-    public function registryAction(Request $request)
+    public function registryAction()
     {
-        if($request->getMethod() == "POST"){
-            $salt = uniqid(mt_rand(), true);
-
-            $userData = $request->request->all();
-
-            $this->user
-                ->setUsername($userData['username'])
-                ->setEmail($userData['email'])
-                ->setPassword(md5($this->get('security.password_encoder')->encodePassword($this->user, $salt)))
-                ->setDateOfBirthday( new \DateTime($userData['brthday-date']))
-                ->setAbout($userData['about'])
-                ->setSalt($salt)
-                ->setRoles('ROLE_USER')
-                ->setEraseCredentials('erase');
-
-            $validator = $this->get('validator');
-            $errors = $validator->validate($this->user);
-
-            if(count($errors) == 0){
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($this->user);
-                $em->flush();
-            }
-            else{
-                return $this->render('CmsUserBundle:Default:registry.html.twig',
-                    array( 'errors' => $errors)
-                );
-            }
-
-
-            return $this->redirect('login');
-        }
-
         return $this->render('CmsUserBundle:Default:registry.html.twig');
     }
 
