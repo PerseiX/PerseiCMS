@@ -3,6 +3,7 @@ namespace Cms\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="Cms\UserBundle\Entity\UserRepository")
@@ -17,9 +18,41 @@ class User implements UserInterface,  \Serializable
     private $id;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=64)
      */
     private $username;
+
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Email(
+     *     message = "Podany przez ciebie email {{ value }} nie jest prawidłowy.",
+     *     checkMX = true
+     * )
+     * @ORM\Column(type="string", length= 64)
+     */
+    private $email;
+
+    /**
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=64)
+     */
+    private $password;
+
+    /**
+     * @Assert\NotBlank()
+     * @Assert\DateTime(
+     *     message="Podana przez ciebię data urodzin nie jest prawidłowa"
+     * )
+     * @ORM\Column(type="date", length=128)
+     */
+    private $dateOfBirthday;
+
+    /**
+     * @Assert\NotBlank()
+     * @ORM\Column(type="text", length=512)
+     */
+    private $about;
 
     /**
      * @ORM\Column(type="string", length=64)
@@ -35,21 +68,6 @@ class User implements UserInterface,  \Serializable
      * @ORM\Column(type="string", length=255)
      */
     private $eraseCredentials;
-
-    /**
-     * @ORM\Column(type="string", length=64)
-     */
-    private $password;
-
-    /**
-     * @ORM\Column(type="date", length=128)
-     */
-    private $dateBirthday;
-
-    /**
-     * @ORM\Column(type="text", length=512)
-     */
-    private $about;
 
     /**
      * @ORM\Column(name="is_active", type="boolean")
@@ -174,28 +192,6 @@ class User implements UserInterface,  \Serializable
         return $this;
     }
 
-    /**
-     * Set dateBirthday
-     *
-     * @param \DateTime $dateBirthday
-     * @return User
-     */
-    public function setDateBirthday($dateBirthday)
-    {
-        $this->dateBirthday = $dateBirthday;
-
-        return $this;
-    }
-
-    /**
-     * Get dateBirthday
-     *
-     * @return \DateTime 
-     */
-    public function getDateBirthday()
-    {
-        return $this->dateBirthday;
-    }
 
     /**
      * Set about
@@ -265,5 +261,55 @@ class User implements UserInterface,  \Serializable
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+
+    /**
+     * Set dateOfBirthday
+     *
+     * @param \DateTime $dateOfBirthday
+     *
+     * @return User
+     */
+    public function setDateOfBirthday($dateOfBirthday)
+    {
+        $this->dateOfBirthday = $dateOfBirthday;
+
+        return $this;
+    }
+
+    /**
+     * Get dateOfBirthday
+     *
+     * @return \DateTime
+     */
+    public function getDateOfBirthday()
+    {
+        return $this->dateOfBirthday;
     }
 }

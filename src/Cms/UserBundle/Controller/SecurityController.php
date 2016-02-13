@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\Email as Email;
 
 class SecurityController extends Controller
 {
@@ -100,18 +100,31 @@ class SecurityController extends Controller
             $salt = uniqid(mt_rand(), true);
 
             $userData = $request->request->all();
-            $date = new \DateTime($userData['brthday-date']);
-            $this->user->setUsername($userData['username'])
+
+            $this->user
+                ->setUsername($userData['username'])
+                ->setEmail($userData['email'])
                 ->setPassword(md5($this->get('security.password_encoder')->encodePassword($this->user, $salt)))
-                ->setDateBirthday($date)
+                ->setDateOfBirthday( new \DateTime($userData['brthday-date']))
                 ->setAbout($userData['about'])
                 ->setSalt($salt)
                 ->setRoles('ROLE_USER')
                 ->setEraseCredentials('erase');
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($this->user);
-            $em->flush();
+            $validator = $this->get('validator');
+            $errors = $validator->validate($this->user);
+
+            if(count($errors) == 0){
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($this->user);
+                $em->flush();
+            }
+            else{
+                return $this->render('CmsUserBundle:Default:registry.html.twig',
+                    array( 'errors' => $errors)
+                );
+            }
+
 
             return $this->redirect('login');
         }
