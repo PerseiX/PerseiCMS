@@ -78,7 +78,6 @@ $(document).ready(function(){
             dataType: "json",
             data: jsonForm
         }).success(function(data) {
-            //alert(data.s);
             if(data.success == true) {
                 $('.formController .box-info').append(
                     '<div class="panel panel-success" style="display: none">' +
@@ -94,7 +93,7 @@ $(document).ready(function(){
                 $('.formController .box-info').append(
                     '<div class="panel panel-danger" style="display: none">'+ '<div class="panel-heading">' +
                     data.error +
-                    ' <span class="pull-right"></span></div>'+ '</div>');
+                    '<span class="pull-right"></span></div>'+ '</div>');
 
                 $("#registryButton").attr('disabled', 'disabled');
                 $(".formController .box-info .panel-danger").fadeIn('slow').animate({opacity: 1.0}, 2000).fadeOut('slow');

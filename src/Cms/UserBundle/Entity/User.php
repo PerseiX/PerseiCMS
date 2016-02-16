@@ -50,7 +50,7 @@ class User implements UserInterface,  \Serializable
      *     message = "Uzupełnij wszystkie pola."
      * )
      * @Assert\DateTime(
-     *     message="Podana przez ciebię data urodzin nie jest prawidłowa"
+     *     message="Podana przez Ciebię data urodzin nie jest prawidłowa"
      * )
      * @ORM\Column(type="date", length=128)
      */
@@ -60,7 +60,7 @@ class User implements UserInterface,  \Serializable
      * @Assert\NotBlank(
      *     message = "Uzupełnij wszystkie pola."
      * )
-     * @ORM\Column(type="text", length=512)
+     * @ORM\Column(type="text")
      */
     private $about;
 

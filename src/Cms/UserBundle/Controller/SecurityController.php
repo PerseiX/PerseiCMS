@@ -47,15 +47,31 @@ class SecurityController extends Controller
 
             $validator = $this->get('validator');
             $errors = $validator->validate($this->user);
-            if(count($errors) == 0){
+
+            $usernameIsset = $this->getDoctrine()->getRepository('CmsUserBundle:User')->findBy(array('username' => $userData['username']));
+            $emailIsset = $this->getDoctrine()->getRepository('CmsUserBundle:User')->findBy(array('email' => $userData['email']));
+
+            if(count($usernameIsset) != 0)
+            {
+                $message['error'][] = "Podany login jest już zajęty";
+            }
+            if(count($emailIsset) != 0)
+            {
+                $message['error'][] = "Podany email jest już zajęty";
+            }
+            if(count($errors) != 0)
+            {
+                $message['error'][] = $errors[0]->getMessage();
+            }
+
+            if(count($errors) != 0 || count($message) != 0){
+                $message['success'] = false;
+            }
+            else{
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($this->user);
                 $em->flush();
                 $message['success'] = true;
-            }
-            else{
-                $message['success'] = false;
-                $message['error'] =  $errors[0]->getMessage();
             }
         }
 

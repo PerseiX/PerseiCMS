@@ -5,7 +5,7 @@
 
             <ul class="nav nav-pills">
                 <li role="presentation" {% if app.request.attributes.get('_route') == 'index' %}class="active" {% endif %}><a href="{{ path('index') }}"> Home</a></li>
-                <li role="presentation" {% if app.request.attributes.get('_route') == 'profile' %}class="active" {% endif %}> <a href="{{ path('profile') }}"> Panel</a></li>
+                <li role="presentation" {% if app.request.attributes.get('_route') == 'profile' %}class="active" {% endif %}> <a href="{{ path('profile') }}"> </a></li>
                 <li role="presentation"{% if app.request.attributes.get('_route') == 'logout' %}class="active" {% endif %}> <a href="{{ path('logout') }}"> Wyloguj</a></li>
             </ul>
 
