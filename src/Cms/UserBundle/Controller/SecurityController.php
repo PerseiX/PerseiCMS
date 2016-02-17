@@ -86,15 +86,6 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/profile", name="profile")
-     *
-     */
-    public function profileAction()
-    {
-        return $this->render('CmsUserBundle:Default:profile.html.twig', array('user' => $this->getUser()));
-    }
-
-    /**
      * @Route("/login", name="login")
      */
     public function loginAction(Request $request)
@@ -158,4 +149,5 @@ class SecurityController extends Controller
 
         return $this->redirect('index');
     }
+
 }

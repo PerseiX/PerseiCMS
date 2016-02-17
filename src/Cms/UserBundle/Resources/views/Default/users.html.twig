@@ -1,0 +1,36 @@
+{% extends 'CmsUserBundle::layout.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="box-info"></div>
+
+        <table class="table .table-hover">
+            <tr>
+                <th>Id </th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Date of birthday</th>
+                <th>About</th>
+                <th>Active</th>
+                <th>Role</th>
+                <th>Delete</th>
+            </tr>
+
+            {% for user in users %}
+                <tr>
+                    <td> {{ user.id }}</td>
+                    <td> {{ user.username }}</td>
+                    <td> {{ user.email }}</td>
+                    <td> {{ user.dateOfBirthday.date }}</td>
+                    <td> {{ user.about }}</td>
+                    <td> {{ user.isActive }}</td>
+                    <td> {{ user.roles.0 }}</td>
+                    <td class="unset-button"> <a class="prompt-for-delete" href="{{ path('deletedUser', {'userId' : user.id}) }}"> Delete</a>
+                        {#<a id="delete" href="/Delete" class="prompt-for-delete">Delete</a>#}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+{% endblock %}
