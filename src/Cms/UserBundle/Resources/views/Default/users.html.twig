@@ -3,7 +3,7 @@
 {% block body %}
     <div class="container">
         <div class="box-info"></div>
-
+<div class="table-responsive">
         <table class="table .table-hover">
             <tr>
                 <th>Id </th>
@@ -14,23 +14,31 @@
                 <th>Active</th>
                 <th>Role</th>
                 <th>Delete</th>
+                <th>Edit</th>
             </tr>
 
             {% for user in users %}
-                <tr>
-                    <td> {{ user.id }}</td>
-                    <td> {{ user.username }}</td>
-                    <td> {{ user.email }}</td>
-                    <td> {{ user.dateOfBirthday.date }}</td>
-                    <td> {{ user.about }}</td>
-                    <td> {{ user.isActive }}</td>
-                    <td> {{ user.roles.0 }}</td>
-                    <td class="unset-button"> <a class="prompt-for-delete" href="{{ path('deletedUser', {'userId' : user.id}) }}"> Delete</a>
-                        {#<a id="delete" href="/Delete" class="prompt-for-delete">Delete</a>#}
+                <tr id="row{{ loop.index }}" style="background-color: {% if  user.isActive == 1 %}  #e0ffd5; {% else %} #ffdfe1; {% endif %}">
+                    <td id="id"> <span>{{ user.id }} </span></td>
+                    <td id="username"> <span> {{ user.username }} </span></td>
+                    <td id="email"> <span>{{ user.email }} </span></td>
+                    <td id="birthday"> <span>{{ user.dateOfBirthday.date }} </span></td>
+                    <td id="about"> <span>{{ user.about }} </span></td>
+                    <td id="isActive">
+                           {% if user.isActive == 0 %} <span>No</span> {% else %}  <span>Yes</span> {% endif %}
+                       </td>
+                    <td id="roles"> <span>{{ user.roles.0 }} </span></td>
+                    <td class="unset-button"> <a class="delete prompt-for-delete" href="{{ path('deletedUser', {'userId' : user.id}) }}"> Delete</a></td>
+                    <td class="edit-button"> <a class="prompt-for-delete"  id="{{ loop.index }}" href="{{ path('editUser', {'userId' : user.id}) }}"> Edit</a></td>
+                </tr>
+                <tr class="show-row-{{ loop.index }}" style="display: none;" >
+                    <td colspan=9>
+                        <div class="jumbotron jumbotron-{{ loop.index }}">
+                        </div>
                     </td>
                 </tr>
             {% endfor %}
         </table>
-
+</div>
     </div>
 {% endblock %}
