@@ -1,24 +1,4 @@
 {% extends 'CmsUserBundle::layout.html.twig' %}
-{#{% if error %}#}
-    {#<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>#}
-{#{% endif %}#}
-
-{#<form action="{{ path('login_check') }}" method="post">#}
-    {#<label for="username">Username:</label>#}
-    {#<input type="text" id="username" name="_username" value="{{ last_username }}" />#}
-
-    {#<label for="password">Password:</label>#}
-    {#<input type="password" id="password" name="_password" />#}
-
-    {#&#123;&#35;#}
-        {#If you want to control the URL the user#}
-        {#is redirected to on success (more details below)#}
-        {#<input type="hidden" name="_target_path" value="/account" />#}
-    {#&#35;&#125;#}
-
-    {#<button type="submit">login</button>#}
-{#</form>#}
-
 {% block body %}
 
     <style>
@@ -36,7 +16,23 @@
     </style>
 
     <div class="container">
-            Strona domowa
+        {% if  is_granted('IS_AUTHENTICATED_FULLY') %}
+            <p><span class="glyphicon glyphicon-user btn-lg"> {{ app.user.username }}</span></p>
+            <p><span class="glyphicon glyphicon-envelope btn-lg"> {{ app.user.email }}</span></p>
+            <p><span class="glyphicon glyphicon-cloud btn-lg"> {{ app.user.about }}</span></p>
+            <p><span class="glyphicon glyphicon-calendar btn-lg"> {{ app.user.dateOfBirthday.date }}</span></p>
+            <p><span class="glyphicon glyphicon-ok btn-lg"> {{ app.user.isActive }}</span></p>
 
+            {% if app.session.flashBag.has('success') %}
+                <div class="alert alert-success login-success">
+                    {% for msg in app.session.flashBag.get('success') %}
+                        {{ msg }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        {% else %}
+            Witaj w systemie zarządzania PerseiCms. Nie jesteś zalogowany, więc nie jesteś w stanie korzystać z serwisu. Zarejestruj się i poproś administratora o atywację konta.
+        {% endif %}
     </div>
 {% endblock %}

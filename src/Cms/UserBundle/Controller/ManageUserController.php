@@ -22,9 +22,9 @@ class ManageUserController extends Controller
      * @Route("/users", name="users")
      *
      */
-    public function profileAction()
+    public function usersAction()
     {
-        $users = $this->getDoctrine()->getRepository('CmsUserBundle:User')->findAll();
+        $users = $this->getDoctrine()->getRepository('CmsUserBundle:User')->findBy(array(), array('id' => 'DESC'));
 
         return $this->render('CmsUserBundle:Default:users.html.twig', array('users' => $users));
     }

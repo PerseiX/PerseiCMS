@@ -30,14 +30,20 @@
         </div>
         <br>
         <div class="form-group">
-            <input name="submit" type="submit" class="form-control btn-info" value="Login" aria-describedby="basic-addon2" required>
+            <input name="submit" type="submit" class="form-control btn-info login-button" value="Login" aria-describedby="basic-addon2" required>
         </div>
     </form>
-
     {% if sessions %}
-        {% for session in sessions %}
-            {{ session }}
-        {% endfor %}
+        <div class="box-info">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    {% for session in sessions %}
+                        {{ session }}
+                    {% endfor %}
+                    <span class="pull-right"></span></div>
+                </div>
+             </div>
+        </div>
     {% endif %}
 </div>
 {% endblock %}

@@ -42,6 +42,7 @@ class SecurityController extends Controller
                 ->setDateOfBirthday( new \DateTime($userData['brthdayDate']))
                 ->setAbout($userData['about'])
                 ->setSalt($salt)
+                ->setIsActive(FALSE)
                 ->setRoles('ROLE_USER')
                 ->setEraseCredentials('erase');
 
@@ -103,23 +104,26 @@ class SecurityController extends Controller
             if ($user != null) {
                 $encodedPassword = md5($this->get('security.password_encoder')->encodePassword($this->user, $user->getSalt()));
 
-                if ($encodedPassword == $user->getPassword()) {
+                if ($encodedPassword == $user->getPassword() && $user->getIsActive() == true) {
 
                     $token = new UsernamePasswordToken($user, $user->getPassword(), 'default', $user->getRoles() );
                     $this->get('security.token_storage')->setToken($token);
-                    $this->session->getFlashBag()->add('succes', 'Pomyślnie zalogowano');
+
+                    $this->session->getFlashBag()->add('success', 'Pomyślnie zalogowano');
+
+                    return $this->redirect($this->generateUrl('index'));
                 } else {
-                    $this->session->getFlashBag()->add('succes', 'Nieprawidłowy login lub hasło');
+                    $this->session->getFlashBag()->add('success', 'Nieprawidłowy login lub hasło');
                 }
 
             } else {
-                $this->session->getFlashBag()->add('succes', 'Błędne dane');
+                $this->session->getFlashBag()->add('success', 'Błędne dane');
             }
         }
 
         return $this->render('CmsUserBundle:Default:login.html.twig',
             array(
-                'sessions' => $this->session->getFlashBag()->get('succes'),
+                'sessions' => $this->session->getFlashBag()->get('success'),
             )
         );
     }
