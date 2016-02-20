@@ -8,6 +8,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Cms\UserBundle\Entity\User;
+use Cms\UserBundle\Entity\Role;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Validator\Constraints\Date;
@@ -33,6 +34,7 @@ class SecurityController extends Controller
 
         if($request->getMethod() == "POST"){
             $salt = uniqid(mt_rand(), true);
+            $role =  $this->getDoctrine()->getRepository('CmsUserBundle:Role')->findBy(array('name' => 'Custom User'))[0];
 
             $userData = $request->request->all();
             $this->user
@@ -43,7 +45,7 @@ class SecurityController extends Controller
                 ->setAbout($userData['about'])
                 ->setSalt($salt)
                 ->setIsActive(FALSE)
-                ->setRoles('ROLE_USER')
+                ->setRoles($role)
                 ->setEraseCredentials('erase');
 
             $validator = $this->get('validator');
@@ -106,7 +108,9 @@ class SecurityController extends Controller
 
                 if ($encodedPassword == $user->getPassword() && $user->getIsActive() == true) {
 
-                    $token = new UsernamePasswordToken($user, $user->getPassword(), 'default', $user->getRoles() );
+                    $role =  $this->getDoctrine()->getRepository('CmsUserBundle:Role')->findBy(array('id' => $user->getRoles()))[0];
+
+                    $token = new UsernamePasswordToken($user, $user->getPassword(), 'default', array($role->getRole()) );
                     $this->get('security.token_storage')->setToken($token);
 
                     $this->session->getFlashBag()->add('success', 'Pomyślnie zalogowano');
@@ -154,4 +158,27 @@ class SecurityController extends Controller
         return $this->redirect('index');
     }
 
+    /**
+     * @Route("/role", name="role")
+     */
+    public function roleAction(Request $request)
+    {
+        $data = $request->request->all();
+        if($request->getMethod() == "POST")
+        {
+            $role = new Role();
+            $role->setRole($data['role'])
+                ->setIsActive($data['isActive'])
+                ->setName($data['name']);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($role);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('role'));
+        }
+        $roles = $this->getDoctrine()->getRepository('CmsUserBundle:Role')->findAll();
+
+        return $this->render('CmsUserBundle:Default:role.html.twig', array('roles' => $roles));
+    }
 }

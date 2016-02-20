@@ -24,9 +24,9 @@ class ManageUserController extends Controller
      */
     public function usersAction()
     {
-        $users = $this->getDoctrine()->getRepository('CmsUserBundle:User')->findBy(array(), array('id' => 'DESC'));
-
-        return $this->render('CmsUserBundle:Default:users.html.twig', array('users' => $users));
+        $users = $this->getDoctrine()->getRepository('CmsUserBundle:User')->getAllUsers();
+        $roles = $this->getDoctrine()->getRepository('CmsUserBundle:Role')->findAll();
+        return $this->render('CmsUserBundle:Default:users.html.twig', array('users' => $users, 'roles' => $roles));
     }
 
     /**
@@ -57,11 +57,11 @@ class ManageUserController extends Controller
         $user = $em->getRepository('CmsUserBundle:User')->findOneBy(array('id' =>$userId));
 
         if($request->getMethod() == "POST"){
-
+            $role = $em->getRepository('CmsUserBundle:Role')->findOneBy(array('name' => $userData['role']));
             $user->setUsername($userData['username'])
                  ->setEmail($userData['email'])
                  ->setIsActive($userData['isActive'])
-                 ->setRoles($userData['roles'])
+                 ->setRoles($role)
                  ->setAbout($userData['about']);
 
             $validator = $this->get('validator');

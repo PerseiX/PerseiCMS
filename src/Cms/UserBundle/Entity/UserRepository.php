@@ -19,4 +19,16 @@ class UserRepository extends EntityRepository
             ->getOneOrNullResult();
 
     }
+
+    public function getAllUsers()
+    {
+        $users = $this->createQueryBuilder('u')
+            ->select('u.username, u.email, r.name as roleName, r.role, u.dateOfBirthday, u.about, u.isActive, u.id')
+            ->join('u.roles','r')
+            ->orderBy('u.id', 'DESC')
+            ->getQuery()
+            ->getArrayResult();
+
+         return $users;
+    }
 }

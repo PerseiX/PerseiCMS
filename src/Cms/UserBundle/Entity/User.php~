@@ -70,9 +70,10 @@ class User implements UserInterface
     private $salt;
 
     /**
-     * @ORM\Column(type="string", length=16)
+     * @ORM\ManyToOne(targetEntity="Cms\UserBundle\Entity\Role", inversedBy="user")
+     * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
      */
-    private $roles ;
+    private $roles;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -172,6 +173,122 @@ class User implements UserInterface
     public function getEmail()
     {
         return $this->email;
+    }
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Set dateOfBirthday
+     *
+     * @param \DateTime $dateOfBirthday
+     *
+     * @return User
+     */
+    public function setDateOfBirthday($dateOfBirthday)
+    {
+        $this->dateOfBirthday = $dateOfBirthday;
+
+        return $this;
+    }
+
+    /**
+     * Get dateOfBirthday
+     *
+     * @return \DateTime
+     */
+    public function getDateOfBirthday()
+    {
+        return $this->dateOfBirthday;
+    }
+
+    /**
+     * Set about
+     *
+     * @param string $about
+     *
+     * @return User
+     */
+    public function setAbout($about)
+    {
+        $this->about = $about;
+
+        return $this;
+    }
+
+    /**
+     * Get about
+     *
+     * @return string
+     */
+    public function getAbout()
+    {
+        return $this->about;
+    }
+
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     *
+     * @return User
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+
+    /**
+     * Set eraseCredentials
+     *
+     * @param string $eraseCredentials
+     *
+     * @return User
+     */
+    public function setEraseCredentials($eraseCredentials)
+    {
+        $this->eraseCredentials = $eraseCredentials;
+
+        return $this;
     }
 
 }

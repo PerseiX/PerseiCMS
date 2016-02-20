@@ -70,9 +70,10 @@ class User implements UserInterface
     private $salt;
 
     /**
-     * @ORM\Column(type="string", length=16)
+     * @ORM\ManyToOne(targetEntity="Cms\UserBundle\Entity\Role", inversedBy="user")
+     * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
      */
-    private $roles ;
+    private $roles;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -275,19 +276,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * Set roles
-     *
-     * @param string $roles
-     *
-     * @return User
-     */
-    public function setRoles($roles)
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
 
     /**
      * Set eraseCredentials
@@ -299,6 +287,21 @@ class User implements UserInterface
     public function setEraseCredentials($eraseCredentials)
     {
         $this->eraseCredentials = $eraseCredentials;
+
+        return $this;
+    }
+
+
+    /**
+     * Set roles
+     *
+     * @param \Cms\UserBundle\Entity\Role $roles
+     *
+     * @return User
+     */
+    public function setRoles(\Cms\UserBundle\Entity\Role $roles = null)
+    {
+        $this->roles = $roles;
 
         return $this;
     }

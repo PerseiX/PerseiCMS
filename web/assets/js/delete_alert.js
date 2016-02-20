@@ -122,7 +122,6 @@ $(document).ready(function () {
         var isActive = $('#row'+rowNumber+' #isActive span').text();
         var roles = $('#row'+rowNumber+' #roles span').text();
 
-
         $(".show-row-"+rowNumber).fadeIn('slow');
         $('.jumbotron-'+rowNumber).empty().append(
             '<form method="post" class="formClass">'+
@@ -149,7 +148,10 @@ $(document).ready(function () {
 
                 '<div class="form-group">'+
                     '<span class="filed-name">Roles</span>'+
-                    '<input name="roles" class="form-control roles" aria-describedby="basic-addon2" type="text" />'+
+                    '<select name="role" class="form-control" >' +
+                        '<option id="Admin" value="Admin">Admin</option>'+
+                        '<option id="Custom" value="Custom User">Custom User</option>'+
+                    '</select>' +
                 '</div>'+
 
                 '<div class="filed-name" style="width:70px;">'+
@@ -175,6 +177,7 @@ $(document).ready(function () {
         $('.birthday').val($.trim(birthday));
         $('.about').val($.trim(about));
         $('.form-control #'+isActive).attr('selected', 'true');
+        $('.form-control #'+roles.split(' ')[0]).attr('selected', true);
         $('.roles').val($.trim(roles));
 
         $('.formClass .btn').on('click', function (e) {
