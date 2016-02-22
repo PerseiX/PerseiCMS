@@ -10,4 +10,13 @@ namespace Cms\UserBundle\Entity;
  */
 class RoleRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getAllRoles()
+    {
+        $roles = $this->createQueryBuilder('r')
+            ->select()
+            ->getQuery()
+            ->getArrayResult();
+
+        return $roles;
+    }
 }

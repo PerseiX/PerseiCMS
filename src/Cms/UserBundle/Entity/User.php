@@ -70,7 +70,7 @@ class User implements UserInterface
     private $salt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Cms\UserBundle\Entity\Role", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="Cms\UserBundle\Entity\Role")
      * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
      */
     private $roles;

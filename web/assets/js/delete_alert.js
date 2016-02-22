@@ -1,4 +1,5 @@
 $(document).ready(function () {
+//console.log(rolesInDatabase.name);
     /* Unset operation*/
     $('.table .unset-button a').on('click', function (e) {
         e.preventDefault();
@@ -110,6 +111,11 @@ $(document).ready(function () {
 
         $('.edit-button').css('pointer-events', 'none');
 
+        /*Set a option, which are get in twig js variable*/
+        var roleHtml = "";
+        $.each(rolesInDatabase, function(k,v){
+            roleHtml = roleHtml+"<option id="+ v.name.split(' ')[0]+" value="+ v.role+">"+ v.name+"</option>";
+        });
 
         var rowNumber = $(this).attr('id');
         var url = $('#'+rowNumber).attr('href');
@@ -149,8 +155,7 @@ $(document).ready(function () {
                 '<div class="form-group">'+
                     '<span class="filed-name">Roles</span>'+
                     '<select name="role" class="form-control" >' +
-                        '<option id="Admin" value="Admin">Admin</option>'+
-                        '<option id="Custom" value="Custom User">Custom User</option>'+
+                        roleHtml+
                     '</select>' +
                 '</div>'+
 
@@ -184,7 +189,6 @@ $(document).ready(function () {
             e.preventDefault();
 
             var jsonForm = $('.formClass').serializeObject();
-
             $.ajax({
                 url: url,
                 method: "POST",
