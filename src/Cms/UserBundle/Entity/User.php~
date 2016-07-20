@@ -70,7 +70,7 @@ class User implements UserInterface
     private $salt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Cms\UserBundle\Entity\Role", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="Cms\UserBundle\Entity\Role")
      * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
      */
     private $roles;
@@ -291,4 +291,18 @@ class User implements UserInterface
         return $this;
     }
 
+
+    /**
+     * Set roles
+     *
+     * @param \Cms\UserBundle\Entity\Role $roles
+     *
+     * @return User
+     */
+    public function setRoles(\Cms\UserBundle\Entity\Role $roles = null)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
 }

@@ -43,3 +43,4 @@
 .idea/
 .idea
 var/sessions
+/composer.lock
