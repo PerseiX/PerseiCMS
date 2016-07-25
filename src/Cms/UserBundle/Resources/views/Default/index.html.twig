@@ -1,20 +1,5 @@
 {% extends 'CmsUserBundle::layout.html.twig' %}
 {% block body %}
-
-    <style>
-        .input-group
-        {
-            width: 1000px;
-            margin:10px;
-        }
-
-        .filed-name
-        {
-            font-family: arial;
-            font-size: 18px;
-        }
-    </style>
-
     <div class="container">
         {% if  is_granted('IS_AUTHENTICATED_FULLY') %}
             <p><span class="glyphicon glyphicon-user btn-lg"> {{ app.user.username }}</span></p>

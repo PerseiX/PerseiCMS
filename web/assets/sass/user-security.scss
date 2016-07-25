@@ -1,0 +1,32 @@
+//### layout.html.twig
+.container{
+  .input-group {
+    width: 1000px;
+    margin:10px;
+  }
+
+  .filed-name {
+    font-family: arial;
+    font-size: 18px;
+  }
+}
+.active {
+  background-color: #e0ffd5;
+}
+.no-active {
+  background-color: #ffdfe1;
+}
+
+//### role.html.twig
+.role-is-active{
+  width:70px;
+}
+
+//### users.html.twig
+.jumbotron-message {
+  display: none;
+}
+
+.user-menu{
+  color: white;
+}

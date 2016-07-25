@@ -9,7 +9,7 @@
         <div class="box-info"></div>
         <div class="table-responsive">
             <table class="table .table-hover">
-                <tr class=" navbar-inverse" style="color: white;">
+                <tr class="navbar-inverse user-menu">
                     <th>Id </th>
                     <th>Username</th>
                     <th>Email</th>
@@ -22,7 +22,7 @@
                 </tr>
 
                 {% for user in users %}
-                    <tr id="row{{ loop.index }}" style="background-color: {% if  user.isActive == 1 %}  #e0ffd5; {% else %} #ffdfe1; {% endif %}">
+                    <tr id="row{{ loop.index }}" class="{% if  user.isActive == 1 %}  actie {% else %} no-active {% endif %}">
                         <td id="id"> <span>{{ user.id }} </span></td>
                         <td id="username"> <span> {{ user.username }} </span></td>
                         <td id="email"> <span>{{ user.email }} </span></td>
@@ -35,7 +35,7 @@
                         <td class="unset-button"> <a class="delete prompt-for-delete" href="{{ path('deletedUser', {'userId' : user.id}) }}"> Delete</a></td>
                         <td class="edit-button"> <a class="prompt-for-delete"  id="{{ loop.index }}" href="{{ path('editUser', {'userId' : user.id}) }}"> Edit</a></td>
                     </tr>
-                    <tr class="show-row-{{ loop.index }}" style="display: none;" >
+                    <tr class="show-row-{{ loop.index }} jumbotron-message">
                         <td colspan=9>
                             <div class="jumbotron jumbotron-{{ loop.index }}">
                             </div>

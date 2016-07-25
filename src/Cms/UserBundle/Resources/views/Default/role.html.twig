@@ -12,7 +12,7 @@
             </tr>
 
             {% for role in roles %}
-                <tr style="background-color: {% if  role.isActive == 1 %}  #e0ffd5; {% else %} #ffdfe1; {% endif %}">
+                <tr class="{% if  role.isActive == 1 %} active {% else %} no-active {% endif %}">
                     <td id="id"> <span>{{ role.id }} </span></td>
                     <td id="role"> <span>{{ role.role }} </span></td>
                     <td id="name"> <span>{{ role.name }} </span></td>
@@ -34,13 +34,13 @@
             <input name="name" type="text" class="form-control" placeholder="Name" aria-describedby="basic-addon2" required autocomplete="off">
         </div>
 
-        <div class="filed-name" style="width:70px;">
+        <div class="filed-name role-is-active" >
             <span class="filed-name">Is active</span>
             <select name="isActive" class="form-control" >
                 <option id="No" value="0">No</option>
                 <option id="Yes" value="1">Yes</option>
-                </select>
-            </div>
+            </select>
+        </div>
         <br>
         <div class="form-group">
             <input name="submit" type="submit" class="form-control btn-info login-button" value="Zapisz" aria-describedby="basic-addon2" required>

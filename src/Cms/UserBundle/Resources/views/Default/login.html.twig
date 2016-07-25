@@ -1,21 +1,6 @@
 {% extends 'CmsUserBundle::layout.html.twig' %}
 
 {% block body %}
-
-<style>
-    .input-group
-    {
-        width: 1000px;
-        margin:10px;
-    }
-
-    .filed-name
-    {
-        font-family: arial;
-        font-size: 18px;
-    }
-</style>
-
 <div class="container">
     <form method="POST" action="">
 
@@ -40,7 +25,7 @@
                     {% for session in sessions %}
                         {{ session }}
                     {% endfor %}
-                    <span class="pull-right"></span></div>
+                    <span class="pull-right"></span>
                 </div>
              </div>
         </div>
