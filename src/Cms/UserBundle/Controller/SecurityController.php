@@ -15,16 +15,6 @@ use Symfony\Component\Validator\Constraints\Date;
 
 class SecurityController extends Controller
 {
-    protected $session;
-
-    protected $user;
-
-    public function __construct()
-    {
-        $this->session = new Session();
-        $this->user = new User();
-    }
-
     /**
      * @Route("/formValidate", name="formValidate")
      */
@@ -35,12 +25,13 @@ class SecurityController extends Controller
         if($request->getMethod() == "POST"){
             $salt = uniqid(mt_rand(), true);
             $role =  $this->getDoctrine()->getRepository('CmsUserBundle:Role')->findBy(array('name' => 'Custom User'))[0];
+            $user = new User();
 
             $userData = $request->request->all();
-            $this->user
+            $user
                 ->setUsername($userData['username'])
                 ->setEmail($userData['email'])
-                ->setPassword(md5($this->get('security.password_encoder')->encodePassword($this->user, $salt)))
+                ->setPassword(md5($this->get('security.password_encoder')->encodePassword($user, $salt)))
                 ->setDateOfBirthday( new \DateTime($userData['brthdayDate']))
                 ->setAbout($userData['about'])
                 ->setSalt($salt)
@@ -49,7 +40,7 @@ class SecurityController extends Controller
                 ->setEraseCredentials('erase');
 
             $validator = $this->get('validator');
-            $errors = $validator->validate($this->user);
+            $errors = $validator->validate($user);
 
             $usernameIsset = $this->getDoctrine()->getRepository('CmsUserBundle:User')->findBy(array('username' => $userData['username']));
             $emailIsset = $this->getDoctrine()->getRepository('CmsUserBundle:User')->findBy(array('email' => $userData['email']));
@@ -72,7 +63,7 @@ class SecurityController extends Controller
             }
             else{
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($this->user);
+                $em->persist($user);
                 $em->flush();
                 $message['success'] = true;
             }
@@ -93,41 +84,37 @@ class SecurityController extends Controller
      */
     public function loginAction(Request $request)
     {
-
-        $authenticationUtils = $this->get('security.authentication_utils');
-        $error = $authenticationUtils->getLastAuthenticationError();
-
-        $lastUsername = $authenticationUtils->getLastUsername();
+        $session = new Session();
 
         if ($request->getMethod() == 'POST') {
             $userData = $request->request->all();
+            $newUser = new User();
+            $foundUser = $this->getDoctrine()->getRepository('CmsUserBundle:User')->loadUsername($userData['username']);
+            if ($foundUser != null) {
+                $encodedPassword = md5($this->get('security.password_encoder')->encodePassword($newUser, $foundUser->getSalt()));
 
-            $user = $this->getDoctrine()->getRepository('CmsUserBundle:User')->loadUsername($userData['username']);
-            if ($user != null) {
-                $encodedPassword = md5($this->get('security.password_encoder')->encodePassword($this->user, $user->getSalt()));
+                if ($encodedPassword == $foundUser->getPassword() && $foundUser->getIsActive() == true) {
 
-                if ($encodedPassword == $user->getPassword() && $user->getIsActive() == true) {
+                    $role =  $this->getDoctrine()->getRepository('CmsUserBundle:Role')->findBy(array('id' => $foundUser->getRoles()))[0];
 
-                    $role =  $this->getDoctrine()->getRepository('CmsUserBundle:Role')->findBy(array('id' => $user->getRoles()))[0];
-
-                    $token = new UsernamePasswordToken($user, $user->getPassword(), 'default', array($role->getRole()) );
+                    $token = new UsernamePasswordToken($foundUser, $foundUser->getPassword(), 'default', array($role->getRole()) );
                     $this->get('security.token_storage')->setToken($token);
 
-                    $this->session->getFlashBag()->add('success', 'Pomyślnie zalogowano');
+                    $session->getFlashBag()->add('success', 'Pomyślnie zalogowano');
 
                     return $this->redirect($this->generateUrl('index'));
                 } else {
-                    $this->session->getFlashBag()->add('success', 'Nieprawidłowy login lub hasło');
+                    $session->getFlashBag()->add('success', 'Nieprawidłowy login lub hasło');
                 }
 
             } else {
-                $this->session->getFlashBag()->add('success', 'Błędne dane');
+                $session->getFlashBag()->add('success', 'Błędne dane');
             }
         }
 
         return $this->render('CmsUserBundle:Default:login.html.twig',
             array(
-                'sessions' => $this->session->getFlashBag()->get('success'),
+                'sessions' => $session->getFlashBag()->get('success'),
             )
         );
     }
