@@ -41,6 +41,48 @@ $(document).ready(function () {
 
     });
 
+    $('.table #unset-role a').on('click', function (e) {
+        e.preventDefault();
+        var answer = confirm('Do you want to delete?\nPamiętaj że usónięcie tej roli\nusunie również wszystkich użytkowników powiązanych z tą rolą!');
+        if (answer) {
+            $.ajax({
+                url: ($(this).attr('href')),
+                method: "POST",
+                dataType: "json"
+            }).success(function (data) {
+                if (data.unset == true) {
+                    $('.box-info').empty().append(
+                        '<div class="panel panel-success" style="display: none">' +
+                        '<div class="panel-heading">Pomyślnie usunięto role.<span class="pull-right"></span></div>' +
+                        '</div>'
+                    );
+                    $('html, body').animate({scrollTop: 0}, 800);
+                    $(' .box-info .panel-success').fadeIn('slow').animate({opacity: 1.0}, 3000).fadeOut('slow');
+                    setTimeout(function () {
+                        window.location.replace($(location).attr('href'));
+                    }, 3000);
+                }
+                else {
+                    $('.box-info').empty().append(
+                        '<div class="panel panel-danger"+  style="display: none">' + '<div class="panel-heading">' +
+                        "Nie znaleziono roli o podanym id." +
+                        '<span class="pull-right"></span></div>' + '</div>'
+                    );
+                    $('html, body').animate({scrollTop: 0}, 800);
+                    $(".box-info .panel-danger ").fadeIn('slow').animate({opacity: 1.0}, 2000).fadeOut('slow');
+                }
+            });
+        }
+        else {
+            $('.box-info').empty().append(
+                '<div class="panel panel-danger" style="display: none">' + '<div class="panel-heading">' +
+                "Cofnięto operację usówania" +
+                '<span class="pull-right"></span></div>' + '</div>');
+            $(".box-info .panel-danger").fadeIn('slow').animate({opacity: 1.0}, 2000).fadeOut('slow');
+        }
+
+    });
+
     /* Edit operation*/
     $.fn.serializeObject = function () {
 
@@ -310,7 +352,7 @@ $(document).ready(function () {
                 }
             });
         });
-        
+
         $('.anuluj').on('click', function(){
             $('.edit-button').css('pointer-events', 'visible');
             $(".show-row-"+rowNumber).css('display', 'none');

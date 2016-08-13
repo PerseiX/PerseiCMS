@@ -102,4 +102,22 @@ class ManageUserController extends Controller
         }
         return new JsonResponse(true);
     }
+
+    /**
+     * @Route("/delete-role/{roleId}", name="delete-role")
+     */
+    public function deleteRole($roleId)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $role = $em->getRepository('CmsUserBundle:Role')->findOneBy(array('id' => $roleId));
+
+        if(!$role){
+            $unset = false;
+        } else{
+            $em->remove($role);
+            $em->flush();
+            $unset = true;
+        }
+        return new JsonResponse(array('unset' => $unset));
+    }
 }

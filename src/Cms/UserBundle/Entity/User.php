@@ -71,7 +71,7 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Cms\UserBundle\Entity\Role")
-     * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $roles;
 
