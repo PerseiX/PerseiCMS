@@ -106,6 +106,99 @@ $(document).ready(function () {
 
         return json;
     };
+
+    $('.table #edit-role a').on('click', function (e) {
+        e.preventDefault();
+        $('.edit-role').css('pointer-events', 'none');
+
+        var rowNumber = $(this).attr('id');
+        var url = $('#'+rowNumber).attr('href');
+
+        var id = $('.table #edit-'+rowNumber+' #id span').text();
+        var role = $('.table #edit-'+rowNumber+' #role span').text();
+        var name = $('.table #edit-'+rowNumber+' #name span').text();
+        var isActive = $('.table #edit-'+rowNumber+' #isActive span').text();
+
+        $(".show-row-"+rowNumber).fadeIn('slow');
+        $('.jumbotron-'+rowNumber).empty().append(
+            '<form method="post" class="formClass">'+
+                '<input name="id" class="id" style="display:none;" aria-describedby="basic-addon1" type="text" />'+
+                '<div class="form-group">'+
+                    '<span class="filed-name ">Role</span>'+
+                    '<input name="role" class="form-control role" aria-describedby="basic-addon2" type="text" />'+
+                '</div>'+
+                '<div class="form-group">'+
+                    '<span class="filed-name ">Name</span>'+
+                    '<input name="name" class="form-control name" aria-describedby="basic-addon2" type="text" />'+
+                '</div>'+
+                '<div class="filed-name" style="width:70px;">'+
+                    '<span class="filed-name">Is active</span>'+
+                    '<select name="isActive" class="form-control" >' +
+                    '<option id="No" value="0">No</option>' +
+                    '<option id="Yes" value="1">Yes</option>' +
+                    '</select>' +
+                '</div><br>'+
+                '<button class="btn save btn-block btn-info">Zapisz</button>'+
+            '</form>'+
+            '<button class="anuluj btn-block btn-warning">Anuluj</button>'
+        );
+
+        $('.id').val($.trim(id));
+        $('.role').val($.trim(role));
+        $('.name').val($.trim(name));
+        $('#'+isActive).attr('selected', 'true');
+
+
+        $('.formClass .save').on('click', function (e) {
+            e.preventDefault();
+            var jsonForm = $('.formClass').serializeObject();
+
+            $.ajax({
+                url: url,
+                method: "POST",
+                dataType: "json",
+                data: jsonForm
+            }).success(function (data) {
+                if(data == true)
+                {
+                    $('.edit-role').css('pointer-events', 'visible');
+                    $(".show-row-"+rowNumber).css('display', 'none');
+
+                    $('.box-info').empty().append(
+                        '<div class="panel panel-success" style="display: none">' +
+                        '<div class="panel-heading">Zapisano zmiany.<span class="pull-right"></span></div>' +
+                        '</div>'
+                    );
+                    $(".box-info .panel-success").fadeIn('slow').animate({opacity: 1.0}, 2000).fadeOut('slow');
+
+                    $('html, body').animate({
+                        scrollTop: $('.box-info .panel-success').offset().top
+                    }, 1000);
+
+                    setTimeout(function () {
+                        window.location.replace($(location).attr('href'));
+                    }, 3000);
+                }
+            });
+        });
+
+        $('.anuluj').on('click', function(){
+            $('.edit-button').css('pointer-events', 'visible');
+            $(".show-row-"+rowNumber).css('display', 'none');
+
+            $('.box-info').empty().append(
+                '<div class="panel panel-danger" style="display: none">' +
+                '<div class="panel-heading">Edycja została anulowanna.<span class="pull-right"></span></div>' +
+                '</div>'
+            );
+            $(".box-info .panel-danger").fadeIn('slow').animate({opacity: 1.0}, 2000).fadeOut('slow');
+
+            $('html, body').animate({
+                scrollTop: $('.box-info .panel-danger').offset().top
+            }, 1000);
+        });
+    });
+
     $('.table .edit-button a').on('click', function (e) {
         e.preventDefault();
 
@@ -217,7 +310,7 @@ $(document).ready(function () {
                 }
             });
         });
-        /* Anuluj message*/
+        
         $('.anuluj').on('click', function(){
             $('.edit-button').css('pointer-events', 'visible');
             $(".show-row-"+rowNumber).css('display', 'none');

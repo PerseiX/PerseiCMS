@@ -29,8 +29,8 @@
                         <td id="birthday"> <span>{{ user.dateOfBirthday.date }} </span></td>
                         <td id="about"> <span>{{ user.about }} </span></td>
                         <td id="isActive">
-                               {% if user.isActive == 0 %} <span>No</span> {% else %}  <span>Yes</span> {% endif %}
-                           </td>
+                           {% if user.isActive == 0 %} <span>No</span> {% else %}  <span>Yes</span> {% endif %}
+                        </td>
                         <td id="roles"> <span>{{ user.roleName }} </span></td>
                         <td class="unset-button"> <a class="delete prompt-for-delete" href="{{ path('deletedUser', {'userId' : user.id}) }}"> Delete</a></td>
                         <td class="edit-button"> <a class="prompt-for-delete"  id="{{ loop.index }}" href="{{ path('editUser', {'userId' : user.id}) }}"> Edit</a></td>

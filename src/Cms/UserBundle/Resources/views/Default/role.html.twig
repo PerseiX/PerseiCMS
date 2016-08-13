@@ -3,7 +3,8 @@
 {% block body %}
 <div class="container">
     {% if roles %}
-        <table class="table .table-hover">
+        <div class="box-info"></div>
+        <table class="table table-hover">
             <tr>
                 <th>Id </th>
                 <th>Role </th>
@@ -12,11 +13,20 @@
             </tr>
 
             {% for role in roles %}
-                <tr class="{% if  role.isActive == 1 %} active {% else %} no-active {% endif %}">
+                <tr id="edit-{{ loop.index }}" class="{% if  role.isActive == 1 %}active {% else %} no-active {% endif %}">
                     <td id="id"> <span>{{ role.id }} </span></td>
                     <td id="role"> <span>{{ role.role }} </span></td>
                     <td id="name"> <span>{{ role.name }} </span></td>
-                    <td id="isActive"> <span>{{ role.isActive }} </span></td>
+                    <td id="isActive">
+                        {% if role.isActive == 0 %} <span>No</span> {% else %}  <span>Yes</span> {% endif %}
+                    </td>
+                    <td id="edit-role"><a id="{{ loop.index }}" href="{{ path('edit-role', {'roleId': role.id }) }}">Edit</a></td>
+                </tr>
+                <tr class="show-row-{{ loop.index }} jumbotron-message">
+                    <td colspan=9>
+                        <div class="jumbotron jumbotron-{{ loop.index }}">
+                        </div>
+                    </td>
                 </tr>
             {% endfor %}
         </table>

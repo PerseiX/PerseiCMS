@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Date;
+use Doctrine\ORM\EntityNotFoundException;
 
 class ManageUserController extends Controller
 {
@@ -80,4 +81,25 @@ class ManageUserController extends Controller
         return new JsonResponse($message);
     }
 
+    /**
+     * @Route("/edit-role/{roleId}", name="edit-role")
+     */
+    public function editRole(Request $request, $roleId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $chosenRole = $em->getRepository('CmsUserBundle:Role')->findOneBy(array('id' => $roleId));
+        if(!$chosenRole) {
+            throw new EntityNotFoundException("Not found role");
+        }
+
+        $roleData = $request->request->all();
+        if($request->getMethod() == "POST")
+        {
+            $chosenRole->setIsActive($roleData['isActive'])
+                ->setRole($roleData['role'])
+                ->setName($roleData['name']);
+            $em->flush();
+        }
+        return new JsonResponse(true);
+    }
 }
