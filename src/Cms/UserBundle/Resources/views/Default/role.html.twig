@@ -13,7 +13,7 @@
             </tr>
 
             {% for role in roles %}
-                <tr id="edit-{{ loop.index }}" class="{% if  role.isActive == 1 %}active {% else %} no-active {% endif %}">
+                <tr id="edit-{{ loop.index }}" class="{% if  role.isActive == 1 %}active-element{% else %}no-active{% endif %}">
                     <td id="id"> <span>{{ role.id }} </span></td>
                     <td id="role"> <span>{{ role.role }} </span></td>
                     <td id="name"> <span>{{ role.name }} </span></td>

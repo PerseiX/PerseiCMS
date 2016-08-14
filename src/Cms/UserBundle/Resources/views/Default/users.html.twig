@@ -22,7 +22,7 @@
                 </tr>
 
                 {% for user in users %}
-                    <tr id="row{{ loop.index }}" class="{% if  user.isActive == 1 %} active {% else %} no-active {% endif %}">
+                    <tr id="row{{ loop.index }}" class="{% if  user.isActive == 1 %}active-element{% else %}no-active{% endif %}">
                         <td id="id"> <span>{{ user.id }} </span></td>
                         <td id="username"> <span> {{ user.username }} </span></td>
                         <td id="email"> <span>{{ user.email }} </span></td>
