@@ -1,0 +1,38 @@
+<form method="post" class="formClass">
+    <input name="id" class="id" style="display:none;" aria-describedby="basic-addon1" type="text" />
+    <div class="form-group">
+        <span class="filed-name ">Username</span>
+        <input name="username" class="form-control username" aria-describedby="basic-addon2" type="text" />
+        </div>
+
+    <div class="form-group">
+        <span class="filed-name ">Email</span>
+        <input name="email" class="form-control email" aria-describedby="basic-addon2" type="text" />
+        </div>
+
+    <div class="form-group">
+        <span class="filed-name">Date of birthday</span>
+        <input name="birthday" id="datepicker" type="text" class="form-control birthday" placeholder="Date of birthday" aria-describedby="basic-addon2" autocomplete="off" required>
+        </div>
+
+    <div class="form-group">
+        <span class="filed-name">About me</span>
+        <textarea  name="about" class="form-control about" placeholder="About me" aria-describedby="basic-addon2" required ></textarea>
+        </div>
+
+    <div class="form-group">
+        <span class="filed-name">Roles</span>
+        <select id="role-list" name="role" class="form-control" >
+        </select>
+    </div>
+
+    <div class="filed-name" style="width:70px;">
+        <span class="filed-name">Is active</span>
+        <select name="isActive" class="form-control" >
+            <option id="No" value="0">No</option>
+            <option id="Yes" value="1">Yes</option>
+        </select>
+    </div><br>
+    <button class="btn btn-block btn-info">Zapisz</button>
+    </form>
+<button class="anuluj btn-block btn-warning">Anuluj</button>

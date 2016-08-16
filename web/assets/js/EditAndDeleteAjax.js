@@ -1,5 +1,5 @@
 $(document).ready(function () {
-//console.log(rolesInDatabase.name);
+
     /* Unset operation*/
     $('.table .unset-button a').on('click', function (e) {
         e.preventDefault();
@@ -155,41 +155,18 @@ $(document).ready(function () {
 
         var rowNumber = $(this).attr('id');
         var url = $('#'+rowNumber).attr('href');
-
         var id = $('.table #edit-'+rowNumber+' #id span').text();
         var role = $('.table #edit-'+rowNumber+' #role span').text();
         var name = $('.table #edit-'+rowNumber+' #name span').text();
         var isActive = $('.table #edit-'+rowNumber+' #isActive span').text();
 
         $(".show-row-"+rowNumber).fadeIn('slow');
-        $('.jumbotron-'+rowNumber).empty().append(
-            '<form method="post" class="formClass">'+
-                '<input name="id" class="id" style="display:none;" aria-describedby="basic-addon1" type="text" />'+
-                '<div class="form-group">'+
-                    '<span class="filed-name ">Role</span>'+
-                    '<input name="role" class="form-control role" aria-describedby="basic-addon2" type="text" />'+
-                '</div>'+
-                '<div class="form-group">'+
-                    '<span class="filed-name ">Name</span>'+
-                    '<input name="name" class="form-control name" aria-describedby="basic-addon2" type="text" />'+
-                '</div>'+
-                '<div class="filed-name" style="width:70px;">'+
-                    '<span class="filed-name">Is active</span>'+
-                    '<select name="isActive" class="form-control" >' +
-                    '<option id="No" value="0">No</option>' +
-                    '<option id="Yes" value="1">Yes</option>' +
-                    '</select>' +
-                '</div><br>'+
-                '<button class="btn save btn-block btn-info">Zapisz</button>'+
-            '</form>'+
-            '<button class="anuluj btn-block btn-warning">Anuluj</button>'
-        );
-
-        $('.id').val($.trim(id));
-        $('.role').val($.trim(role));
-        $('.name').val($.trim(name));
-        $('#'+isActive).attr('selected', 'true');
-
+        $('.jumbotron-'+rowNumber).empty().load( "../../src/Cms/UserBundle/Resources/views/AjaxTemplates/editRoleForm.html.twig", function() {
+            $('.id').val($.trim(id));
+            $('.role').val($.trim(role));
+            $('.name').val($.trim(name));
+            $('#' + isActive).attr('selected', 'true');
+        });
 
         $('.formClass .save').on('click', function (e) {
             e.preventDefault();
@@ -201,50 +178,19 @@ $(document).ready(function () {
                 dataType: "json",
                 data: jsonForm
             }).success(function (data) {
-                if(data == true)
-                {
-                    $('.edit-role').css('pointer-events', 'visible');
-                    $(".show-row-"+rowNumber).css('display', 'none');
-
-                    $('.box-info').empty().append(
-                        '<div class="panel panel-success" style="display: none">' +
-                        '<div class="panel-heading">Zapisano zmiany.<span class="pull-right"></span></div>' +
-                        '</div>'
-                    );
-                    $(".box-info .panel-success").fadeIn('slow').animate({opacity: 1.0}, 2000).fadeOut('slow');
-
-                    $('html, body').animate({
-                        scrollTop: $('.box-info .panel-success').offset().top
-                    }, 1000);
-
-                    setTimeout(function () {
-                        window.location.replace($(location).attr('href'));
-                    }, 3000);
+                if(data == true) {
+                    successMessageAfterSave(rowNumber, '.edit-role');
                 }
             });
         });
 
-        $('.anuluj').on('click', function(){
-            $('.edit-button').css('pointer-events', 'visible');
-            $(".show-row-"+rowNumber).css('display', 'none');
-
-            $('.box-info').empty().append(
-                '<div class="panel panel-danger" style="display: none">' +
-                '<div class="panel-heading">Edycja została anulowanna.<span class="pull-right"></span></div>' +
-                '</div>'
-            );
-            $(".box-info .panel-danger").fadeIn('slow').animate({opacity: 1.0}, 2000).fadeOut('slow');
-
-            $('html, body').animate({
-                scrollTop: $('.box-info .panel-danger').offset().top
-            }, 1000);
-        });
+        cancelOperation(rowNumber, '.edit-role');
     });
 
-    $('.table .edit-button a').on('click', function (e) {
+    $('.table .edit-user a').on('click', function (e) {
         e.preventDefault();
 
-        $('.edit-button').css('pointer-events', 'none');
+        $('.edit-user').css('pointer-events', 'none');
 
         /*Set a option, which are get in twig js variable*/
         var roleHtml = "";
@@ -254,7 +200,6 @@ $(document).ready(function () {
 
         var rowNumber = $(this).attr('id');
         var url = $('#'+rowNumber).attr('href');
-
         var id = $('#row'+rowNumber+' #id span').text();
         var username = $('#row'+rowNumber+' #username span').text();
         var email = $('#row'+rowNumber+' #email span').text();
@@ -264,97 +209,66 @@ $(document).ready(function () {
         var roles = $('#row'+rowNumber+' #roles span').text();
 
         $(".show-row-"+rowNumber).fadeIn('slow');
-        $('.jumbotron-'+rowNumber).empty().append(
-            '<form method="post" class="formClass">'+
-                '<input name="id" class="id" style="display:none;" aria-describedby="basic-addon1" type="text" />'+
-                '<div class="form-group">'+
-                    '<span class="filed-name ">Username</span>'+
-                    '<input name="username" class="form-control username" aria-describedby="basic-addon2" type="text" />'+
-                '</div>'+
+        $('.jumbotron-'+rowNumber).empty().load( "../../src/Cms/UserBundle/Resources/views/AjaxTemplates/editUserForm.html.twig", function() {
+            $('#role-list').append(roleHtml);
+            /* Scroll to top a jumbotron block*/
+            $('html, body').animate({
+                scrollTop: $('.jumbotron-'+rowNumber).offset().top
+            }, 1000);
 
-                '<div class="form-group">'+
-                    '<span class="filed-name ">Email</span>'+
-                    '<input name="email" class="form-control email" aria-describedby="basic-addon2" type="text" />'+
-                '</div>'+
+            $('.id').val($.trim(id));
+            $('.username').val($.trim(username));
+            $('.email').val($.trim(email));
+            $('.birthday').val($.trim(birthday));
+            $('.about').val($.trim(about));
+            $('.form-control #' + isActive).attr('selected', 'true');
+            $('.form-control #' + roles.split(' ')[0]).attr('selected', true);
+            $('.roles').val($.trim(roles));
 
-                '<div class="form-group">'+
-                    '<span class="filed-name">Date of birthday</span>'+
-                    '<input name="birthday" id="datepicker" type="text" class="form-control birthday" placeholder="Date of birthday" aria-describedby="basic-addon2" autocomplete="off" required>'+
-                '</div>'+
+            $('.formClass .btn').on('click', function (e) {
+                e.preventDefault();
 
-                '<div class="form-group">'+
-                    '<span class="filed-name">About me</span>'+
-                    '<textarea  name="about" class="form-control about" placeholder="About me" aria-describedby="basic-addon2" required ></textarea>'+
-                '</div>'+
+                var jsonForm = $('.formClass').serializeObject();
+                $.ajax({
+                    url: url,
+                    method: "POST",
+                    dataType: "json",
+                    data: jsonForm
+                }).success(function (data) {
+                    if(data.success == true) {
+                        successMessageAfterSave(rowNumber, '.edit-user');
+                    }
+                });
+            });
 
-                '<div class="form-group">'+
-                    '<span class="filed-name">Roles</span>'+
-                    '<select name="role" class="form-control" >' +
-                        roleHtml+
-                    '</select>' +
-                '</div>'+
+            cancelOperation(rowNumber, '.edit-user');
+        });
+    });
 
-                '<div class="filed-name" style="width:70px;">'+
-                    '<span class="filed-name">Is active</span>'+
-                    '<select name="isActive" class="form-control" >' +
-                        '<option id="No" value="0">No</option>' +
-                        '<option id="Yes" value="1">Yes</option>' +
-                    '</select>' +
-                '</div><br>'+
-                '<button class="btn btn-block btn-info">Zapisz</button>'+
-            '</form>'+
-            '<button class="anuluj btn-block btn-warning">Anuluj</button>'
+    function successMessageAfterSave(rowNumber, className)
+    {
+        $(className).css('pointer-events', 'visible');
+        $(".show-row-"+rowNumber).css('display', 'none');
+
+        $('.box-info').empty().append(
+            '<div class="panel panel-success" style="display: none">' +
+            '<div class="panel-heading">Zapisano zmiany.<span class="pull-right"></span></div>' +
+            '</div>'
         );
+        $(".box-info .panel-success").fadeIn('slow').animate({opacity: 1.0}, 2000).fadeOut('slow');
 
-       /* Scroll to top a jumbotron block*/
         $('html, body').animate({
-            scrollTop: $('.jumbotron-'+rowNumber).offset().top
+            scrollTop: $('.box-info .panel-success').offset().top
         }, 1000);
 
-        $('.id').val($.trim(id));
-        $('.username').val($.trim(username));
-        $('.email').val($.trim(email));
-        $('.birthday').val($.trim(birthday));
-        $('.about').val($.trim(about));
-        $('.form-control #'+isActive).attr('selected', 'true');
-        $('.form-control #'+roles.split(' ')[0]).attr('selected', true);
-        $('.roles').val($.trim(roles));
-
-        $('.formClass .btn').on('click', function (e) {
-            e.preventDefault();
-
-            var jsonForm = $('.formClass').serializeObject();
-            $.ajax({
-                url: url,
-                method: "POST",
-                dataType: "json",
-                data: jsonForm
-            }).success(function (data) {
-                if(data.success == true)
-                {
-                    $('.edit-button').css('pointer-events', 'visible');
-                    $(".show-row-"+rowNumber).css('display', 'none');
-
-                    $('.box-info').empty().append(
-                        '<div class="panel panel-success" style="display: none">' +
-                        '<div class="panel-heading">Zapisano zmiany.<span class="pull-right"></span></div>' +
-                        '</div>'
-                    );
-                    $(".box-info .panel-success").fadeIn('slow').animate({opacity: 1.0}, 2000).fadeOut('slow');
-
-                    $('html, body').animate({
-                        scrollTop: $('.box-info .panel-success').offset().top
-                    }, 1000);
-
-                    setTimeout(function () {
-                        window.location.replace($(location).attr('href'));
-                    }, 3000);
-                }
-            });
-        });
-
+        setTimeout(function () {
+            window.location.replace($(location).attr('href'));
+        }, 3000);
+    }
+    function cancelOperation(rowNumber, className)
+    {
         $('.anuluj').on('click', function(){
-            $('.edit-button').css('pointer-events', 'visible');
+            $(className).css('pointer-events', 'visible');
             $(".show-row-"+rowNumber).css('display', 'none');
 
             $('.box-info').empty().append(
@@ -368,5 +282,5 @@ $(document).ready(function () {
                 scrollTop: $('.box-info .panel-danger').offset().top
             }, 1000);
         });
-    });
+    }
 });

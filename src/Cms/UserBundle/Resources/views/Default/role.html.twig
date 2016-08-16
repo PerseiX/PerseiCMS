@@ -5,11 +5,13 @@
     {% if roles %}
         <div class="box-info"></div>
         <table class="table table-hover">
-            <tr>
+            <tr class="navbar-inverse user-menu">
                 <th>Id </th>
                 <th>Role </th>
                 <th>Name </th>
                 <th>Is active </th>
+                <th>Delete </th>
+                <th>Edit </th>
             </tr>
 
             {% for role in roles %}
@@ -20,8 +22,8 @@
                     <td id="isActive">
                         {% if role.isActive == 0 %} <span>No</span> {% else %}  <span>Yes</span> {% endif %}
                     </td>
+                    <td id="unset-role"><a class="delete prompt-for-delete" href="{{ path('delete-role', {'roleId': role.id }) }}">Delete</a></td>
                     <td id="edit-role"><a id="{{ loop.index }}" href="{{ path('edit-role', {'roleId': role.id }) }}">Edit</a></td>
-                    <td id="unset-role"><a class="delete prompt-for-delete" id="{{ loop.index }}" href="{{ path('delete-role', {'roleId': role.id }) }}">Delete</a></td>
                 </tr>
                 <tr class="show-row-{{ loop.index }} jumbotron-message">
                     <td colspan=9>

@@ -33,7 +33,7 @@
                         </td>
                         <td id="roles"> <span>{{ user.roleName }} </span></td>
                         <td class="unset-button"> <a class="delete prompt-for-delete" href="{{ path('deletedUser', {'userId' : user.id}) }}"> Delete</a></td>
-                        <td class="edit-button"> <a class="prompt-for-delete"  id="{{ loop.index }}" href="{{ path('editUser', {'userId' : user.id}) }}"> Edit</a></td>
+                        <td class="edit-user"> <a class="prompt-for-delete"  id="{{ loop.index }}" href="{{ path('editUser', {'userId' : user.id}) }}"> Edit</a></td>
                     </tr>
                     <tr class="show-row-{{ loop.index }} jumbotron-message">
                         <td colspan=9>
