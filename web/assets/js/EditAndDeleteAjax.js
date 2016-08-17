@@ -166,25 +166,25 @@ $(document).ready(function () {
             $('.role').val($.trim(role));
             $('.name').val($.trim(name));
             $('#' + isActive).attr('selected', 'true');
-        });
 
-        $('.formClass .save').on('click', function (e) {
-            e.preventDefault();
-            var jsonForm = $('.formClass').serializeObject();
+            $('.formClass .save').on('click', function (e) {
+                e.preventDefault();
+                var jsonForm = $('.formClass').serializeObject();
 
-            $.ajax({
-                url: url,
-                method: "POST",
-                dataType: "json",
-                data: jsonForm
-            }).success(function (data) {
-                if(data == true) {
-                    successMessageAfterSave(rowNumber, '.edit-role');
-                }
+                $.ajax({
+                    url: url,
+                    method: "POST",
+                    dataType: "json",
+                    data: jsonForm
+                }).success(function (data) {
+                    if(data == true) {
+                        successMessageAfterSave(rowNumber, '.edit-role');
+                    }
+                });
             });
-        });
 
-        cancelOperation(rowNumber, '.edit-role');
+            cancelOperation(rowNumber, '.edit-role');
+        });
     });
 
     $('.table .edit-user a').on('click', function (e) {
@@ -194,8 +194,11 @@ $(document).ready(function () {
 
         /*Set a option, which are get in twig js variable*/
         var roleHtml = "";
+
         $.each(rolesInDatabase, function(k,v){
-            roleHtml = roleHtml+"<option id="+ v.name.split(' ')[0]+" value="+ v.role+">"+ v.name+"</option>";
+            if(v.isActive == true){
+                roleHtml = roleHtml+"<option id="+ v.name.split(' ')[0]+" value="+ v.role+">"+ v.name+"</option>";
+            }
         });
 
         var rowNumber = $(this).attr('id');
