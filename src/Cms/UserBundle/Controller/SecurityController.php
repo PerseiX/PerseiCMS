@@ -94,15 +94,16 @@ class SecurityController extends Controller
                 $encodedPassword = md5($this->get('security.password_encoder')->encodePassword($newUser, $foundUser->getSalt()));
 
                 if ($encodedPassword == $foundUser->getPassword() && $foundUser->getIsActive() == true) {
-
                     $role =  $this->getDoctrine()->getRepository('CmsUserBundle:Role')->findBy(array('id' => $foundUser->getRoles()))[0];
+                    if($role->getIsActive() === TRUE) {
+                        $token = new UsernamePasswordToken($foundUser, $foundUser->getPassword(), 'default', array($role->getRole()) );
+                        $this->get('security.token_storage')->setToken($token);
+                        $session->getFlashBag()->add('success', 'Pomyślnie zalogowano');
 
-                    $token = new UsernamePasswordToken($foundUser, $foundUser->getPassword(), 'default', array($role->getRole()) );
-                    $this->get('security.token_storage')->setToken($token);
+                        return $this->redirect($this->generateUrl('index'));
+                    }
+                    $session->getFlashBag()->add('success', 'Konto z Twoim poziomem uprwnień jest chwilowo niekatywne.');
 
-                    $session->getFlashBag()->add('success', 'Pomyślnie zalogowano');
-
-                    return $this->redirect($this->generateUrl('index'));
                 } else {
                     $session->getFlashBag()->add('success', 'Nieprawidłowy login lub hasło');
                 }
