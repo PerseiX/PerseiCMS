@@ -12,6 +12,7 @@ use Cms\UserBundle\Entity\Role;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Validator\Constraints\Date;
+use Cms\UserBundle\Form\RoleType;
 
 class SecurityController extends Controller
 {
@@ -152,12 +153,13 @@ class SecurityController extends Controller
     public function roleAction(Request $request)
     {
         $data = $request->request->all();
+
         if($request->getMethod() == "POST")
         {
             $role = new Role();
-            $role->setRole($data['role'])
-                ->setIsActive($data['isActive'])
-                ->setName($data['name']);
+            $role->setRole($data['role']['role'])
+                ->setIsActive($data['role']['isActive'])
+                ->setName($data['role']['name']);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($role);
@@ -166,7 +168,9 @@ class SecurityController extends Controller
             return $this->redirect($this->generateUrl('role'));
         }
         $roles = $this->getDoctrine()->getRepository('CmsUserBundle:Role')->findAll();
+        $roleType = new RoleType();
+        $form = $this->createForm(RoleType::class, $roleType);
 
-        return $this->render('CmsUserBundle:Default:role.html.twig', array('roles' => $roles));
+        return $this->render('CmsUserBundle:Default:role.html.twig', array('roles' => $roles, 'form' => $form->createView()));
     }
 }
