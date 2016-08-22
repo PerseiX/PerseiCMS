@@ -2,21 +2,26 @@
 
 namespace Cms\UserBundle\Controller;
 
+use Cms\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Date;
 use Doctrine\ORM\EntityNotFoundException;
+use Cms\UserBundle\Form\UserProfileEditionType;
 
 class ManageUserController extends Controller
 {
     /**
      * @Route("/", name="index")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return $this->render('CmsUserBundle:Default:index.html.twig');
+        $user = $this->getDoctrine()->getRepository('CmsUserBundle:User')->findOneBy(['id' => $this->getUser()->getId()]);
+        $form = $this->createForm(UserProfileEditionType::class, $user);
+
+        return $this->render('CmsUserBundle:Default:index.html.twig', array('form' => $form->createView()));
     }
 
     /**

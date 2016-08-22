@@ -85,6 +85,11 @@ class User implements UserInterface
      */
     private $isActive;
 
+    /**
+     * @ORM\Column(name="profile_picture_path", type="string")
+     */
+    private $profilePicturePath;
+
     public function __construct()
     {
         $this->isActive = true;
@@ -304,5 +309,29 @@ class User implements UserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    /**
+     * Set profilePicturePath
+     *
+     * @param string $profilePicturePath
+     *
+     * @return User
+     */
+    public function setProfilePicturePath($profilePicturePath)
+    {
+        $this->profilePicturePath = $profilePicturePath;
+
+        return $this;
+    }
+
+    /**
+     * Get profilePicturePath
+     *
+     * @return string
+     */
+    public function getProfilePicturePath()
+    {
+        return $this->profilePicturePath;
     }
 }
