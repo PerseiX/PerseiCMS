@@ -35,21 +35,8 @@ class UserProfileEditionType extends AbstractType
                     'label' => "About",
                     'label_attr' => ['class' => 'field-name']
                 ])
-                ->add('roles', EntityType::class, [
-                    'class' => 'CmsUserBundle:Role',
-                    'label' => "Roles"
-                ])
-                ->add('isActive', ChoiceType::class, [
-                    'attr' => ['class' => 'form-control'],
-                    'choices' =>
-                        [
-                            'Yes' => 1,
-                            'No' => 0,
-                        ],
-                    'data' => 1,
-                    'label' => "Is active",
-                ])
                 ->add('profilePicturePath', FileType::class, [
+                    'data_class' => null,
                     'label' => "File"
                 ])
                 ->add('save', SubmitType::class,[

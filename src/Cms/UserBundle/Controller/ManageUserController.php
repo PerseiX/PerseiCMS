@@ -11,19 +11,52 @@ use Symfony\Component\Validator\Constraints\Date;
 use Doctrine\ORM\EntityNotFoundException;
 use Cms\UserBundle\Form\UserProfileEditionType;
 
+
 class ManageUserController extends Controller
 {
     /**
      * @Route("/", name="index")
      */
-    public function indexAction(Request $request)
+    public function indexAction()
+    {
+        return $this->render('CmsUserBundle:Default:index.html.twig');
+    }
+
+    /**
+     * @Route("/edit-profile", name="edit-profile")
+     */
+    public function editProfileAction(Request $request)
     {
         $user = $this->getDoctrine()->getRepository('CmsUserBundle:User')->findOneBy(['id' => $this->getUser()->getId()]);
         $form = $this->createForm(UserProfileEditionType::class, $user);
+        $form->handleRequest($request);
 
-        return $this->render('CmsUserBundle:Default:index.html.twig', array('form' => $form->createView()));
+
+        if($form->isSubmitted())
+        {
+            $validator = $this->get('validator');
+            $errors = $validator->validate($user);
+            (count($errors) == 0)?
+                $this->get('session')->getFlashBag()->add('edit-success', 'Zapisano zmiany'):
+                $this->get('session')->getFlashBag()->add('edit-fail',  $errors[0]->getMessage());
+
+            if($form->isValid())
+            {
+                $file = $user->getProfilePicturePath();
+                $filName = md5(uniqid()).'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('profile_picture_path'),
+                    $filName
+                );
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+            }
+        }
+
+        return $this->render('CmsUserBundle:User:editProfile.html.twig', array('form' => $form->createView()));
     }
-
     /**
      * @Route("/users", name="users")
      *

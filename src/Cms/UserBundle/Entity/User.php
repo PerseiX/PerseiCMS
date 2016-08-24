@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="Cms\UserBundle\Entity\UserRepository")
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id
@@ -86,16 +86,11 @@ class User implements UserInterface
     private $isActive;
 
     /**
-     * @ORM\Column(name="profile_picture_path", type="string")
+     * @ORM\Column(type="string")
+     * @Assert\Image()
+     * @Assert\NotBlank(message="Please, upload the product brochure as a PDF file.")
      */
     private $profilePicturePath;
-
-    public function __construct()
-    {
-        $this->isActive = true;
-        // may not be needed, see section on salt below
-        // $this->salt = md5(uniqid(null, true));
-    }
 
     public function getSalt()
     {
@@ -333,5 +328,34 @@ class User implements UserInterface
     public function getProfilePicturePath()
     {
         return $this->profilePicturePath;
+    }
+
+    /**
+     * Serialization is required to FileUploader
+     * @return string
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->salt,
+            $this->password,
+            $this->roles
+        ));
+    }
+
+    /**
+     * @param string $serialized
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->salt,
+            $this->password,
+            $this->roles
+            ) = unserialize($serialized);
     }
 }
