@@ -12,18 +12,17 @@
                 </button>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                {% if is_granted('ROLE_USER') %}
-
-                    <ul class="nav nav-pills">
-                        <li role="presentation" {% if app.request.attributes.get('_route') == 'index' or app.request.attributes.get('_route') == 'edit-profile' %}class="active" {% endif %}><a href="{{ path('index') }}"> My profile</a></li>
-                        <li role="presentation"{% if app.request.attributes.get('_route') == 'logout' %}class="active" {% endif %}> <a href="{{ path('logout') }}"> Wyloguj</a></li>
-                    </ul>
-                {% elseif is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_ADMIN') %}
                     <ul class="nav nav-pills">
                         <li role="presentation" {% if app.request.attributes.get('_route') == 'index' or app.request.attributes.get('_route') == 'edit-profile' %}class="active" {% endif %}><a href="{{ path('index') }}"> My profile</a></li>
                         <li role="presentation" {% if app.request.attributes.get('_route') == 'users' %}class="active" {% endif %}> <a href="{{ path('users') }}"> Users</a></li>
                         <li role="presentation" {% if app.request.attributes.get('_route') == 'role' %}class="active" {% endif %}> <a href="{{ path('role') }}"> Roles</a></li>
                         <li role="presentation" {% if app.request.attributes.get('_route') == 'logout' %}class="active" {% endif %}> <a href="{{ path('logout') }}"> Wyloguj</a></li>
+                    </ul>
+                {% elseif is_granted('ROLE_USER') %}
+                    <ul class="nav nav-pills">
+                        <li role="presentation" {% if app.request.attributes.get('_route') == 'index' or app.request.attributes.get('_route') == 'edit-profile' %}class="active" {% endif %}><a href="{{ path('index') }}"> My profile</a></li>
+                        <li role="presentation"{% if app.request.attributes.get('_route') == 'logout' %}class="active" {% endif %}> <a href="{{ path('logout') }}"> Wyloguj</a></li>
                     </ul>
                 {% else %}
                     <ul class="nav nav-pills">
