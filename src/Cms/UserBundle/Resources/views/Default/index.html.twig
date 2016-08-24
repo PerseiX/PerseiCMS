@@ -1,63 +1,32 @@
 {% extends 'CmsUserBundle::layout.html.twig' %}
 {% block body %}
     <div class="container">
-        {% if  is_granted('IS_AUTHENTICATED_FULLY') %}
-            <p><span class="glyphicon glyphicon-user btn-lg"> {{ app.user.username }}</span></p>
-            <p><span class="glyphicon glyphicon-envelope btn-lg"> {{ app.user.email }}</span></p>
-            <p><span class="glyphicon glyphicon-cloud btn-lg"> {{ app.user.about }}</span></p>
-            <p><span class="glyphicon glyphicon-calendar btn-lg"> {{ app.user.dateOfBirthday.date }}</span></p>
-            <p><span class="glyphicon glyphicon-ok btn-lg"> {{ app.user.isActive }}</span></p>
+        <div class="row">
+            <div class="col-md-5">
+                {% if  is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <p><span class="glyphicon glyphicon-user btn-lg"> {{ app.user.username }}</span></p>
+                    <p><span class="glyphicon glyphicon-envelope btn-lg"> {{ app.user.email }}</span></p>
+                    <p><span class="glyphicon glyphicon-cloud btn-lg"> {{ app.user.about }}</span></p>
+                    <p><span class="glyphicon glyphicon-calendar btn-lg"> {{ app.user.dateOfBirthday.date }}</span></p>
+                    <p><span class="glyphicon glyphicon-ok btn-lg"> {{ app.user.isActive }}</span></p>
 
-            {% if app.session.flashBag.has('success') %}
-                <div class="alert alert-success login-success">
-                    {% for msg in app.session.flashBag.get('success') %}
-                        {{ msg }}
-                    {% endfor %}
+                    {% if app.session.flashBag.has('success') %}
+                        <div class="alert alert-success login-success">
+                            {% for msg in app.session.flashBag.get('success') %}
+                                {{ msg }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                {% else %}
+                    Witaj w systemie zarządzania PerseiCms. Nie jesteś zalogowany, więc nie jesteś w stanie korzystać z serwisu. Zarejestruj się i poproś administratora o atywację konta.
+                {% endif %}
+            </div>
+            <div class="col-md-7">
+                <div class="btn btn-info">
+                    <a class="edit-button" href="{{ path('edit-profile') }}">Edytuj profil</a>
                 </div>
-            {% endif %}
-
-        {% else %}
-            Witaj w systemie zarządzania PerseiCms. Nie jesteś zalogowany, więc nie jesteś w stanie korzystać z serwisu. Zarejestruj się i poproś administratora o atywację konta.
-        {% endif %}
-        <form method="POST" action="{{ path('index') }}">
-            <div class="form-group">
-                {{ form_label(form.username) }}
-                {{ form_widget(form.username) }}
             </div>
-            <div class="form-group">
-                {{ form_label(form.email) }}
-                {{ form_widget(form.email) }}
-            </div>
-
-            <div class="form-group">
-                {{ form_label(form.dateOfBirthday) }}
-                {{ form_widget(form.dateOfBirthday) }}
-            </div>
-
-            <div class="form-group">
-                {{ form_label(form.about) }}
-                {{ form_widget(form.about) }}
-            </div>
-
-            <div class="form-group">
-                {{ form_label(form.roles) }}
-                {{ form_widget(form.roles) }}
-            </div>
-
-            <div class="form-group">
-                {{ form_label(form.isActive) }}
-                {{ form_widget(form.isActive) }}
-            </div>
-
-            <div class="form-group">
-                {{ form_label(form.profilePicturePath) }}
-                {{ form_widget(form.profilePicturePath) }}
-            </div>
-
-            <div class="form-group role-form-group">
-                {{ form_label(form.save) }}
-                {{ form_widget(form.save) }}
-            </div>
-        </form>
+        </div>
     </div>
 {% endblock %}

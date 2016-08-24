@@ -36,3 +36,15 @@
 .user-menu{
   color: white;
 }
+
+//##edit-profile.html.twig
+.edit-button{
+  color: white;
+  padding: 0 40px;
+  text-decoration: none;
+
+  &:hover{
+    color: white;
+    text-decoration: none;
+  }
+}

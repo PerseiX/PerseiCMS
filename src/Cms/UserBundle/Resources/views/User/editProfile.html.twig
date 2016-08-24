@@ -1,6 +1,6 @@
 {% extends 'CmsUserBundle::layout.html.twig' %}
 {% block body %}
-
+<div class="container">
     {% if app.session.flashBag.has('edit-success') %}
         <div class="alert alert-success login-success">
             {% for msg in app.session.flashBag.get('edit-success') %}
@@ -8,42 +8,47 @@
             {% endfor %}
         </div>
     {% endif %}
-    <div class="edit-user-form">
-        {{ form_start(form) }}
-        <div class="form-group">
-            {{ form_label(form.username) }}
-            {{ form_widget(form.username) }}
+    {% if app.session.flashBag.has('edit-fail') %}
+        <div class="alert alert-danger">
+            {% for msg in app.session.flashBag.get('edit-fail') %}
+                {{ msg }}
+            {% endfor %}
         </div>
-        <div class="form-group">
-            {{ form_label(form.email) }}
-            {{ form_widget(form.email) }}
-        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_label(form.username) }}
+                {{ form_widget(form.username) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email) }}
+            </div>
 
-        <div class="form-group">
-            {{ form_label(form.dateOfBirthday) }}
-            {{ form_widget(form.dateOfBirthday) }}
-        </div>
+            <div class="form-group">
+                {{ form_label(form.dateOfBirthday) }}
+                {{ form_widget(form.dateOfBirthday) }}
+            </div>
 
-        <div class="form-group">
-            {{ form_label(form.about) }}
-            {{ form_widget(form.about) }}
-        </div>
+            <div class="form-group">
+                {{ form_label(form.about) }}
+                {{ form_widget(form.about) }}
+            </div>
 
-        <div class="form-group">
-            {{ form_label(form.isActive) }}
-            {{ form_widget(form.isActive) }}
-        </div>
+            <div class="form-group">
+                {{ form_label(form.profilePicturePath) }}
+                {{ form_widget(form.profilePicturePath) }}
+            </div>
 
-        <div class="form-group">
-            {{ form_label(form.profilePicturePath) }}
-            {{ form_widget(form.profilePicturePath) }}
+            <div class="form-group role-form-group">
+                {{ form_label(form.save) }}
+                {{ form_widget(form.save) }}
+            </div>
+            {{ form_row(form._token) }}
+            {{ form_end(form) }}
         </div>
-
-        <div class="form-group role-form-group">
-            {{ form_label(form.save) }}
-            {{ form_widget(form.save) }}
-        </div>
-        {{ form_row(form._token) }}
-        {{ form_end(form) }}
     </div>
+</div>
 {% endblock %}
