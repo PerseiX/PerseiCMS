@@ -86,9 +86,8 @@ class User implements UserInterface, \Serializable
     private $isActive;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @Assert\Image()
-     * @Assert\NotBlank(message="Please, upload the product brochure as a PDF file.")
      */
     private $profilePicturePath;
 

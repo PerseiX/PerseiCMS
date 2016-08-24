@@ -40,15 +40,15 @@ class ManageUserController extends Controller
                 $this->get('session')->getFlashBag()->add('edit-success', 'Zapisano zmiany'):
                 $this->get('session')->getFlashBag()->add('edit-fail',  $errors[0]->getMessage());
 
-            if($form->isValid())
-            {
-                $file = $user->getProfilePicturePath();
-                $filName = md5(uniqid()).'.'.$file->guessExtension();
-                $file->move(
-                    $this->getParameter('profile_picture_path'),
-                    $filName
-                );
-
+            if($form->isValid()) {
+                if (!empty($file)){
+                    $file = $user->getProfilePicturePath();
+                    $filName = md5(uniqid()) . '.' . $file->guessExtension();
+                    $file->move(
+                        $this->getParameter('profile_picture_path'),
+                        $filName
+                    );
+                }
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();

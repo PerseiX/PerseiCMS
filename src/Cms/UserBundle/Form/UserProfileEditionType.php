@@ -37,7 +37,8 @@ class UserProfileEditionType extends AbstractType
                 ])
                 ->add('profilePicturePath', FileType::class, [
                     'data_class' => null,
-                    'label' => "File"
+                    'label' => "File",
+                    'required' => false
                 ])
                 ->add('save', SubmitType::class,[
                     'attr' => ['class' => 'form-control btn-info login-button', 'type' => 'submit']

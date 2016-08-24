@@ -46,3 +46,4 @@ var/sessions
 /composer.lock
 /web/assets/.sass-cache
 /web/assets/style
+/Cms/UserBundle/Entity/~.php
