@@ -23,6 +23,13 @@
                 <div class="btn btn-info">
                     <a class="edit-button" href="{{ path('edit-profile') }}">Edytuj profil</a>
                 </div>
+                <div class="profile-picture">
+                    {% if app.user.profilePicturePath is empty %}
+                        <img class="profile-image img-circle img-responsive" src="{{ asset('uploads/profile_picture/default-avatar.jpg') }}" />
+                    {% else %}
+                        <img class="profile-image img-circle img-responsive" src="{{ asset('uploads/profile_picture/'~app.user.profilePicturePath ) }}" />
+                    {% endif %}
+                </div>
             </div>
             {% else %}
                 Witaj w systemie zarządzania PerseiCms. Nie jesteś zalogowany, więc nie jesteś w stanie korzystać z serwisu. Zarejestruj się i poproś administratora o atywację konta.

@@ -48,3 +48,13 @@
     text-decoration: none;
   }
 }
+
+.profile-picture{
+  margin: 40px 0;
+  .profile-image{
+    width: 200px;
+    height: 100%;
+    border: 2px solid gray;
+
+  }
+}
