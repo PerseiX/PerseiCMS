@@ -2,3 +2,13 @@ services:
 #    cms_user.example:
 #        class: Cms\UserBundle\Example
 #        arguments: ["@service_id", "plain_value", %parameter%]
+
+    user.uploader:
+        class: Cms\UserBundle\Services\UploaderService
+        arguments: ['%profile_picture_path%']
+
+    app.doctrine_user_uploader_subscriber:
+        class: Cms\UserBundle\EventSubscribers\UserUploadSubscriber
+        arguments: ['@user.uploader']
+        tags:
+            - { name: doctrine.event_subscriber }
