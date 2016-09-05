@@ -92,6 +92,17 @@ class User implements UserInterface, \Serializable
      */
     private $profilePicturePath;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $activatedHash;
+
+
+    public function __construct()
+    {
+        $this->setActivatedHash(bin2hex(random_bytes(36)));
+    }
+
     public function getSalt()
     {
         return $this->salt;
@@ -369,5 +380,29 @@ class User implements UserInterface, \Serializable
         if(file_exists($fileAbsolutePath)){
             unlink($fileAbsolutePath);
         }
+    }
+
+    /**
+     * Set activatedHash
+     *
+     * @param string $activatedHash
+     *
+     * @return User
+     */
+    public function setActivatedHash($activatedHash)
+    {
+        $this->activatedHash = $activatedHash;
+
+        return $this;
+    }
+
+    /**
+     * Get activatedHash
+     *
+     * @return string
+     */
+    public function getActivatedHash()
+    {
+        return $this->activatedHash;
     }
 }

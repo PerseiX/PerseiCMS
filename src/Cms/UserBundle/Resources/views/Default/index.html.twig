@@ -3,21 +3,20 @@
     <div class="container">
         <div class="row">
             <div class="col-md-5">
+
+                {% if app.session.flashBag.has('success') %}
+                    <div class="alert alert-success login-success">
+                        {% for msg in app.session.flashBag.get('success') %}
+                            {{ msg }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 {% if  is_granted('IS_AUTHENTICATED_FULLY') %}
                     <p><span class="glyphicon glyphicon-user btn-lg"> {{ app.user.username }}</span></p>
                     <p><span class="glyphicon glyphicon-envelope btn-lg"> {{ app.user.email }}</span></p>
                     <p><span class="glyphicon glyphicon-cloud btn-lg"> {{ app.user.about }}</span></p>
                     <p><span class="glyphicon glyphicon-calendar btn-lg"> {{ app.user.dateOfBirthday.date }}</span></p>
                     <p><span class="glyphicon glyphicon-ok btn-lg"> {{ app.user.isActive }}</span></p>
-
-                    {% if app.session.flashBag.has('success') %}
-                        <div class="alert alert-success login-success">
-                            {% for msg in app.session.flashBag.get('success') %}
-                                {{ msg }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
             </div>
             <div class="col-md-7">
                 <div class="btn btn-info">

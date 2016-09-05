@@ -149,4 +149,23 @@ class ManageUserController extends Controller
         }
         return new JsonResponse(array('unset' => $unset));
     }
+
+    /**
+     * @Route("/active-account/{hash}", name="active-account")
+     */
+    public function activeAccountAction($hash)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $userByHash = $em->getRepository('CmsUserBundle:User')->findOneBy(array('activatedHash' => $hash));
+
+        if($userByHash) {
+            $userByHash->setIsActive(TRUE);
+            $em->persist($userByHash);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('success', 'Pomyślnie aktywowano konto. Możesz sie zalogować.');
+        }
+
+        return $this->redirect($this->generateUrl('index'));
+    }
 }

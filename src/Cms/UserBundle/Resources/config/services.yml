@@ -12,3 +12,9 @@ services:
         arguments: ['@user.uploader']
         tags:
             - { name: doctrine.event_subscriber }
+
+    send.email.doctrine.post_registry:
+        class: Cms\UserBundle\EventSubscribers\UserActivationEmail
+        arguments: ['@mailer', '@router']
+        tags:
+            - { name: doctrine.event_subscriber }
