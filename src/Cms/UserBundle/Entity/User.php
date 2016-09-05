@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Cms\UserBundle\Entity\UserRepository")
  */
 class User implements UserInterface, \Serializable
@@ -356,5 +357,17 @@ class User implements UserInterface, \Serializable
             $this->password,
             $this->roles
             ) = unserialize($serialized);
+    }
+
+    /**
+     * @ORM\PreRemove
+     */
+    public function removeProfilePicture()
+    {
+        $fileAbsolutePath = __DIR__.'/../../../../web/uploads/profile_picture/'.$this->getProfilePicturePath();
+
+        if(file_exists($fileAbsolutePath)){
+            unlink($fileAbsolutePath);
+        }
     }
 }
